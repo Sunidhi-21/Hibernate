@@ -16,14 +16,15 @@ public class CollegeTester {
 		
 		//collegeDaoImpl.saveCollege(collegeDTO);
 		//collegeDaoImpl.fetchCollege(2);
-		collegeDaoImpl.updateCollege(collegeDTO,2);
+		//collegeDaoImpl.updateCollege(collegeDTO,2);
+		collegeDaoImpl.removeCollege(6);
 		
 	}
 }
 
 //Output
 //CollegeDTODefault constructor
-//invoked updateCollege
+//invoked removeCollege
 
 //Hibernate: 
 //    select
@@ -39,17 +40,13 @@ public class CollegeTester {
 //        collegedto0_.COLLEGE_ID=?
 //CollegeDTODefault constructor
 //Hibernate: 
-//    update
+//    delete 
+//    from
 //        college_dto 
-//    set
-//        CNAME=?,
-//        LOCATION=?,
-//        NO_OF_BRANCHES=?,
-//        NO_OF_ROOMS=?,
-//        NO_OF_STUDENTS=? 
 //    where
 //        COLLEGE_ID=?
-//update collegeDTO
-//2         Ace       Hesarghatta    2000      100       9
-//session is closed 
+//delete collegeDTO
+//session is closed
+//session is closed
+//sessionFactory is closed
 

@@ -14,10 +14,11 @@ public class CollegeDAOImpl implements CollegeDAO {
 	public void saveCollege(CollegeDTO collegeDTO) {
 		System.out.println("invoked saveCollege");
 		Session session = null;
+		SessionFactory sessionFactory = null;
 		try {
 			Configuration con = new Configuration();
 			con.configure();
-			SessionFactory sessionFactory = con.buildSessionFactory();
+			sessionFactory = con.buildSessionFactory();
 			session = sessionFactory.openSession();
 			session.beginTransaction();
 			session.save(collegeDTO);
@@ -32,6 +33,11 @@ public class CollegeDAOImpl implements CollegeDAO {
 			} else {
 				System.out.println("session is not closed");
 			}
+			if (Objects.nonNull(sessionFactory)) {
+				sessionFactory.close();
+				System.out.println("sessionFactory is closed");
+			} else
+				System.out.println("sessionFactory is not closed");
 		}
 	}
 
@@ -39,10 +45,11 @@ public class CollegeDAOImpl implements CollegeDAO {
 	public void fetchCollege(int collegeID) {
 		System.out.println("invoked fetchCollege");
 		Session session = null;
+		SessionFactory sessionFactory = null;
 		try {
 			Configuration con = new Configuration();
 			con.configure();
-			SessionFactory sessionFactory = con.buildSessionFactory();
+			sessionFactory = con.buildSessionFactory();
 			session = sessionFactory.openSession();
 			CollegeDTO collegeDTO = session.get(CollegeDTO.class, collegeID);
 			System.out.println(collegeDTO);
@@ -56,6 +63,11 @@ public class CollegeDAOImpl implements CollegeDAO {
 			} else {
 				System.out.println("session is not closed");
 			}
+			if (Objects.nonNull(sessionFactory)) {
+				sessionFactory.close();
+				System.out.println("sessionFactory is closed");
+			} else
+				System.out.println("sessionFactory is not closed");
 		}
 	}
 
@@ -63,10 +75,11 @@ public class CollegeDAOImpl implements CollegeDAO {
 	public void updateCollege(CollegeDTO collegeDTO, int collegeID) {
 		System.out.println("invoked updateCollege");
 		Session session = null;
+		SessionFactory sessionFactory = null;
 		try {
 			Configuration con = new Configuration();
 			con.configure();
-			SessionFactory sessionFactory = con.buildSessionFactory();
+			sessionFactory = con.buildSessionFactory();
 			session = sessionFactory.openSession();
 			CollegeDTO collegeDTO2 = session.get(CollegeDTO.class, collegeID);
 			collegeDTO2.setCname(collegeDTO.getCname());
@@ -87,6 +100,45 @@ public class CollegeDAOImpl implements CollegeDAO {
 			} else {
 				System.out.println("session is not closed");
 			}
+			if (Objects.nonNull(sessionFactory)) {
+				sessionFactory.close();
+				System.out.println("sessionFactory is closed");
+			} else
+				System.out.println("sessionFactory is not closed");
+		}
+	}
+
+	@Override
+	public void removeCollege(int collegeID) {
+		System.out.println("Invoked removeCollege");
+		Session session = null;
+		SessionFactory sessionFactory = null;
+		try {
+
+			Configuration con = new Configuration();
+			con.configure();
+			sessionFactory = con.buildSessionFactory();
+			session = sessionFactory.openSession();
+			CollegeDTO collegeDTO = session.get(CollegeDTO.class, collegeID);
+			session.beginTransaction();
+			session.delete(collegeDTO);
+			session.getTransaction().commit();
+			System.out.println("delete collegeDTO");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (Objects.nonNull(session)) {
+				session.close();
+				System.out.println("session is closed");
+			} else
+				System.out.println("session is not closed");
+
+			if (Objects.nonNull(sessionFactory)) {
+				sessionFactory.close();
+				System.out.println("sessionFactory is closed");
+			} else
+				System.out.println("sessionFactory is not closed");
 		}
 	}
 }
