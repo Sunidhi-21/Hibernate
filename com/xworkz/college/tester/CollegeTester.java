@@ -9,15 +9,18 @@ public class CollegeTester {
 	public static void main(String[] args) {
 		
 		CollegeDTO collegeDTO = new CollegeDTO();
+		collegeDTO.setCollegeID(4);
 		collegeDTO.setCname("Ace");
 		collegeDTO.setLocation("Hesarghatta");
+		collegeDTO.setNoOfStudents(150);
+		collegeDTO.setNoOfRooms(50);
 		collegeDTO.setNoOfBranches(9);
 		CollegeDAO collegeDaoImpl =new CollegeDAOImpl();
 		
-		//collegeDaoImpl.saveCollege(collegeDTO);
-		//collegeDaoImpl.fetchCollege(2);
+		collegeDaoImpl.saveCollege(collegeDTO);
+		collegeDaoImpl.fetchCollege(4);
 		//collegeDaoImpl.updateCollege(collegeDTO,2);
-		collegeDaoImpl.removeCollege(6);
+		//collegeDaoImpl.removeCollege(6);
 		
 	}
 }
@@ -26,6 +29,16 @@ public class CollegeTester {
 //CollegeDTODefault constructor
 //invoked removeCollege
 
+//Hibernate: 
+//    insert 
+//    into
+//        college_dto
+//        (CNAME, LOCATION, NO_OF_BRANCHES, NO_OF_ROOMS, NO_OF_STUDENTS, COLLEGE_ID) 
+//    values
+//        (?, ?, ?, ?, ?, ?)
+//saved collegeDTO
+//session is closed
+//invoked fetchCollege
 //Hibernate: 
 //    select
 //        collegedto0_.COLLEGE_ID as college_1_0_0_,
@@ -39,14 +52,7 @@ public class CollegeTester {
 //    where
 //        collegedto0_.COLLEGE_ID=?
 //CollegeDTODefault constructor
-//Hibernate: 
-//    delete 
-//    from
-//        college_dto 
-//    where
-//        COLLEGE_ID=?
-//delete collegeDTO
-//session is closed
-//session is closed
+//4         Ace       Hesarghatta    150       50        9
+//fetched collegeDTO
 //sessionFactory is closed
-
+//session is closed

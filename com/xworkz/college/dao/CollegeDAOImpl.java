@@ -4,9 +4,8 @@ import java.util.Objects;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-
 import com.xworkz.college.dto.CollegeDTO;
+import com.xworkz.singleconnection.SingleSessionFactory;
 
 public class CollegeDAOImpl implements CollegeDAO {
 
@@ -14,12 +13,10 @@ public class CollegeDAOImpl implements CollegeDAO {
 	public void saveCollege(CollegeDTO collegeDTO) {
 		System.out.println("invoked saveCollege");
 		Session session = null;
-		SessionFactory sessionFactory = null;
+		
 		try {
-			Configuration con = new Configuration();
-			con.configure();
-			sessionFactory = con.buildSessionFactory();
-			session = sessionFactory.openSession();
+			SessionFactory singleFactory = SingleSessionFactory.getSingleFactory();
+			session = singleFactory.openSession();
 			session.beginTransaction();
 			session.save(collegeDTO);
 			session.getTransaction().commit();
@@ -33,11 +30,6 @@ public class CollegeDAOImpl implements CollegeDAO {
 			} else {
 				System.out.println("session is not closed");
 			}
-			if (Objects.nonNull(sessionFactory)) {
-				sessionFactory.close();
-				System.out.println("sessionFactory is closed");
-			} else
-				System.out.println("sessionFactory is not closed");
 		}
 	}
 
@@ -45,15 +37,16 @@ public class CollegeDAOImpl implements CollegeDAO {
 	public void fetchCollege(int collegeID) {
 		System.out.println("invoked fetchCollege");
 		Session session = null;
-		SessionFactory sessionFactory = null;
+		
 		try {
-			Configuration con = new Configuration();
-			con.configure();
-			sessionFactory = con.buildSessionFactory();
-			session = sessionFactory.openSession();
+			SessionFactory singleFactory = SingleSessionFactory.getSingleFactory();
+			session = singleFactory.openSession();
 			CollegeDTO collegeDTO = session.get(CollegeDTO.class, collegeID);
 			System.out.println(collegeDTO);
 			System.out.println("fetched collegeDTO");
+			
+			SingleSessionFactory.closeSessionFactory();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -63,11 +56,6 @@ public class CollegeDAOImpl implements CollegeDAO {
 			} else {
 				System.out.println("session is not closed");
 			}
-			if (Objects.nonNull(sessionFactory)) {
-				sessionFactory.close();
-				System.out.println("sessionFactory is closed");
-			} else
-				System.out.println("sessionFactory is not closed");
 		}
 	}
 
@@ -75,12 +63,10 @@ public class CollegeDAOImpl implements CollegeDAO {
 	public void updateCollege(CollegeDTO collegeDTO, int collegeID) {
 		System.out.println("invoked updateCollege");
 		Session session = null;
-		SessionFactory sessionFactory = null;
+		
 		try {
-			Configuration con = new Configuration();
-			con.configure();
-			sessionFactory = con.buildSessionFactory();
-			session = sessionFactory.openSession();
+			SessionFactory singleFactory = SingleSessionFactory.getSingleFactory();
+			session = singleFactory.openSession();
 			CollegeDTO collegeDTO2 = session.get(CollegeDTO.class, collegeID);
 			collegeDTO2.setCname(collegeDTO.getCname());
 			collegeDTO2.setLocation(collegeDTO.getLocation());
@@ -100,11 +86,6 @@ public class CollegeDAOImpl implements CollegeDAO {
 			} else {
 				System.out.println("session is not closed");
 			}
-			if (Objects.nonNull(sessionFactory)) {
-				sessionFactory.close();
-				System.out.println("sessionFactory is closed");
-			} else
-				System.out.println("sessionFactory is not closed");
 		}
 	}
 
@@ -112,13 +93,11 @@ public class CollegeDAOImpl implements CollegeDAO {
 	public void removeCollege(int collegeID) {
 		System.out.println("Invoked removeCollege");
 		Session session = null;
-		SessionFactory sessionFactory = null;
+		
 		try {
 
-			Configuration con = new Configuration();
-			con.configure();
-			sessionFactory = con.buildSessionFactory();
-			session = sessionFactory.openSession();
+			SessionFactory singleFactory = SingleSessionFactory.getSingleFactory();
+			session = singleFactory.openSession();
 			CollegeDTO collegeDTO = session.get(CollegeDTO.class, collegeID);
 			session.beginTransaction();
 			session.delete(collegeDTO);
@@ -133,12 +112,6 @@ public class CollegeDAOImpl implements CollegeDAO {
 				System.out.println("session is closed");
 			} else
 				System.out.println("session is not closed");
-
-			if (Objects.nonNull(sessionFactory)) {
-				sessionFactory.close();
-				System.out.println("sessionFactory is closed");
-			} else
-				System.out.println("sessionFactory is not closed");
 		}
 	}
 }
