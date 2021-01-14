@@ -68,10 +68,11 @@ public class CollegeDAOImpl implements CollegeDAO {
 			SessionFactory singleFactory = SingleSessionFactory.getSingleFactory();
 			session = singleFactory.openSession();
 			CollegeDTO collegeDTO2 = session.get(CollegeDTO.class, collegeID);
-			collegeDTO2.setCname(collegeDTO.getCname());
-			collegeDTO2.setLocation(collegeDTO.getLocation());
+			
+			collegeDTO2.setNoOfStudents(collegeDTO.getNoOfStudents());
+			collegeDTO2.setNoOfRooms(collegeDTO.getNoOfRooms());
 			collegeDTO2.setNoOfBranches(collegeDTO.getNoOfBranches());
-
+			
 			session.beginTransaction();
 			session.update(collegeDTO2);
 			session.getTransaction().commit();
