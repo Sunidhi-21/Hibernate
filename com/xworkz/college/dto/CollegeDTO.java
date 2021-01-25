@@ -9,6 +9,11 @@ import javax.persistence.Table;
 @Table(name="college_dto")
 public class CollegeDTO implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@Column(name="COLLEGE_ID")
 	private int collegeID;

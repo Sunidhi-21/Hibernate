@@ -11,4 +11,6 @@ public interface CollegeDAO {
 	void updateCollege(CollegeDTO collegeDTO,int collegeID);
 	
 	void removeCollege(int collegeID);
+	
+	void fetchAllCollege();
 }

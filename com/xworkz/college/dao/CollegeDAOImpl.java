@@ -1,6 +1,9 @@
 package com.xworkz.college.dao;
 
+import java.util.List;
 import java.util.Objects;
+
+import javax.persistence.Query;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,7 +20,7 @@ public class CollegeDAOImpl implements CollegeDAO {
 		try {
 			SessionFactory singleFactory = SingleSessionFactory.getSingleFactory();
 			session = singleFactory.openSession();
-			session.beginTransaction();
+			session.beginTransaction();  
 			session.save(collegeDTO);
 			session.getTransaction().commit();
 			System.out.println("saved collegeDTO");
@@ -114,5 +117,29 @@ public class CollegeDAOImpl implements CollegeDAO {
 			} else
 				System.out.println("session is not closed");
 		}
+	}
+
+	@Override
+	public void fetchAllCollege() {
+		System.out.println("invoked fetchAllCollege");
+		Session session = null;
+		
+		try {
+			SessionFactory singleFactory = SingleSessionFactory.getSingleFactory();
+			session = singleFactory.openSession();
+			String HQL = "from CollegeDTO";
+			Query q = session.createQuery(HQL);
+			List list = q.getResultList();
+			System.out.println(list);
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (Objects.nonNull(session)) {
+				session.close();
+				System.out.println("session is closed");
+			} else
+				System.out.println("session is not closed");
+		}
+		
 	}
 }
