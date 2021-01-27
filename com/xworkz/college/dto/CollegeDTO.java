@@ -3,10 +3,16 @@ package com.xworkz.college.dto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="college_dto")
+@NamedQueries({@NamedQuery(name="UpdateCollege" ,query="update CollegeDTO set cname=:name Where collegeID=:cId"),
+@NamedQuery(name="DeleteCollege" ,query="delete from CollegeDTO where collegeID=:cId"),
+@NamedQuery(name="MaxStudents",query="select max(noOfStudents) from CollegeDTO")})
+
 public class CollegeDTO implements java.io.Serializable {
 
 	/**

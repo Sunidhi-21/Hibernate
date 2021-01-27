@@ -12,5 +12,11 @@ public interface CollegeDAO {
 	
 	void removeCollege(int collegeID);
 	
-	void fetchAllCollege();
+	public void fetchAllCollege();
+	
+	void updateCollege1(String cname, int collegeID);
+	
+	void maxStudents();
+	
+	
 }

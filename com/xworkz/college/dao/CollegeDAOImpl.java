@@ -3,10 +3,15 @@ package com.xworkz.college.dao;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.Query;
+import javax.naming.spi.ResolveResult;
 
+import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
+
 import com.xworkz.college.dto.CollegeDTO;
 import com.xworkz.singleconnection.SingleSessionFactory;
 
@@ -93,22 +98,32 @@ public class CollegeDAOImpl implements CollegeDAO {
 		}
 	}
 
+	@SuppressWarnings({ "deprecation", "rawtypes" })
 	@Override
 	public void removeCollege(int collegeID) {
 		System.out.println("Invoked removeCollege");
 		Session session = null;
+		Transaction transaction=null;
 		
 		try {
 
 			SessionFactory singleFactory = SingleSessionFactory.getSingleFactory();
 			session = singleFactory.openSession();
-			CollegeDTO collegeDTO = session.get(CollegeDTO.class, collegeID);
-			session.beginTransaction();
-			session.delete(collegeDTO);
-			session.getTransaction().commit();
+			//CollegeDTO collegeDTO = session.get(CollegeDTO.class, collegeID);
+			transaction = session.beginTransaction();
+			//session.delete(collegeDTO);
+			
+			//String HQL = "delete from CollegeDTO where collegeID=:cId";
+			Query q = session.getNamedQuery("DeleteCollege");
+			q.setParameter("cId", collegeID);
+			int noOfRows = q.executeUpdate();
+			transaction.commit();
+			System.out.println(noOfRows);
 			System.out.println("delete collegeDTO");
 
 		} catch (Exception e) {
+			transaction.rollback();
+			System.out.println("rollback");
 			e.printStackTrace();
 		} finally {
 			if (Objects.nonNull(session)) {
@@ -127,9 +142,12 @@ public class CollegeDAOImpl implements CollegeDAO {
 		try {
 			SessionFactory singleFactory = SingleSessionFactory.getSingleFactory();
 			session = singleFactory.openSession();
-			String HQL = "from CollegeDTO";
-			Query q = session.createQuery(HQL);
-			List list = q.getResultList();
+//			String HQL = "from CollegeDTO";
+//			Query q = session.createQuery(HQL);
+			System.out.println("using criteria");
+			Criteria createCriteria = session.createCriteria(CollegeDTO.class);
+			createCriteria.add(Restrictions.eq("noOfStudents",500));
+			List list = createCriteria.list();
 			System.out.println(list);
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -141,5 +159,62 @@ public class CollegeDAOImpl implements CollegeDAO {
 				System.out.println("session is not closed");
 		}
 		
+	}
+	
+	@SuppressWarnings({ "deprecation", "rawtypes" })
+	@Override
+	public void updateCollege1(String cname, int collegeID) {
+		System.out.println("invoked updateCollege1");
+		Session session = null;
+		
+		try {
+			SessionFactory singleFactory = SingleSessionFactory.getSingleFactory();
+			session = singleFactory.openSession();
+			Transaction transaction = session.beginTransaction();
+			
+			//String HQL = "update CollegeDTO set cname=:name Where collegeID=:cId";
+			Query q = session.getNamedQuery("UpdateCollege");
+			q.setParameter("name",cname);
+			q.setParameter("cId", collegeID);
+			
+			int update = q.executeUpdate();
+			System.out.println(update);
+			transaction.commit();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (Objects.nonNull(session)) {
+				session.close();
+				System.out.println("session is closed");
+			} else
+				System.out.println("session is not closed");
+		}
+		
+	}
+
+	@Override
+	public void maxStudents() {
+		System.out.println("invoked fetchAllCollege");
+		Session session = null;
+		
+		try {
+			SessionFactory singleFactory = SingleSessionFactory.getSingleFactory();
+			session = singleFactory.openSession();
+			//String HQL = "select max(noOfStudents) from CollegeDTO";
+			Query q = session.getNamedQuery("MaxStudents");
+			List list = q.list();
+			System.out.println(list);
+			
+			SingleSessionFactory.closeSessionFactory();
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (Objects.nonNull(session)) {
+				session.close();
+				System.out.println("session is closed");
+			} else
+				System.out.println("session is not closed");
+		}
 	}
 }

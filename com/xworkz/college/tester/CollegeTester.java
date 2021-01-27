@@ -13,27 +13,58 @@ public class CollegeTester {
 		CollegeDAO collegeDaoImpl =new CollegeDAOImpl();
 		
 		collegeDaoImpl.fetchAllCollege();
+//		collegeDaoImpl.updateCollege1("BSIT",4);
+//		collegeDaoImpl.removeCollege(3);
+//		collegeDaoImpl.maxStudents();
 		
 	}	
 		
 }
 
 //Output
+//CollegeDTODefault constructor
+//invoked updateCollege1
+//Hibernate: 
+//    update
+//        college_dto 
+//    set
+//        CNAME=? 
+//    where
+//        COLLEGE_ID=?
+//1
+//session is closed
+//Invoked removeCollege
+//Hibernate: 
+//    delete 
+//    from
+//        college_dto 
+//    where
+//        COLLEGE_ID=?
+//1
+//delete collegeDTO
+//session is closed
+//invoked fetchAllCollege
 //Hibernate: 
 //    select
-//        collegedto0_.COLLEGE_ID as college_1_0_,
-//        collegedto0_.CNAME as cname2_0_,
-//        collegedto0_.LOCATION as location3_0_,
-//        collegedto0_.NO_OF_BRANCHES as no_of_br4_0_,
-//        collegedto0_.NO_OF_ROOMS as no_of_ro5_0_,
-//        collegedto0_.NO_OF_STUDENTS as no_of_st6_0_ 
+//        max(collegedto0_.NO_OF_STUDENTS) as col_0_0_ 
 //    from
 //        college_dto collegedto0_
+//[2000]
+//sessionFactory is closed
+//session is closed
+//using criteria
+//Hibernate: 
+//    select
+//        this_.COLLEGE_ID as college_1_0_0_,
+//        this_.CNAME as cname2_0_0_,
+//        this_.LOCATION as location3_0_0_,
+//        this_.NO_OF_BRANCHES as no_of_br4_0_0_,
+//        this_.NO_OF_ROOMS as no_of_ro5_0_0_,
+//        this_.NO_OF_STUDENTS as no_of_st6_0_0_ 
+//    from
+//        college_dto this_ 
+//    where
+//        this_.NO_OF_STUDENTS=?
 //CollegeDTODefault constructor
-//CollegeDTODefault constructor
-//CollegeDTODefault constructor
-//CollegeDTODefault constructor
-//CollegeDTODefault constructor
-//CollegeDTODefault constructor
-//[1         SKIT      Bangalore      500       50        6, 2         Ace       Hesarghatta    2000      100       9, 3         rsit      mysore road    2000      150       6, 4         Ace       Hesarghatta    150       50        9, 5         BSIT      Dasarahalli    2000      100       6, 7         rrit      chikkabanavara 1500      70        6]
+//[1         SKIT      Bangalore      500       50        6]
 //session is closed
